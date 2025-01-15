@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url("{{ url_for('static', filename='images/solarbg.png') }}") no-repeat center center/cover;
+
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #000000;
+        }
+        .dashboard-heading {
+        color: #000000;
+  text-align: center;
+  font-size: 2rem; /* Adjust size as needed */
+  margin-bottom: 20px; /* Adjust spacing below the heading */
+}
+        form {
+            margin: 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            text-align: left;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 80%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            background: #f17d00c8;
+            color: white;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #2eba41;
+        }
+        a {
+            display: block;
+            margin-top: 10px;
+            color: #000000;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #createUserForm {
+            display: none;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px; /* Centers the logo and adds spacing below */
+            width: 100px; /* Adjust this size to fit your container */
+            height: auto; /* Maintains aspect ratio */
+            border-radius: 5px; /* Optional: Slightly rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds shadow for a stylish effect */
+        }
+       
+body {
+    margin: 0; /* Remove default margin from the body */
+    padding: 0;
+}
+
+header {
+    text-align: center;
+    padding: 10px 0; /* Add some space inside the header */
+   color: #eeff01; /* Optional: Add a background color */
+}
+
+.page-title {
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    margin: 0; /* Remove any extra margins */
+    font-size: 2.5rem; /* Adjust font size if needed */
+}
+body {
+    margin: 0; /* Remove default body margins */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center all direct children horizontally */
+}
+
+.page-header {
+    width: 100%; /* Ensure the header spans the full width */
+    text-align: center;
+    margin-bottom: 20px; /* Add some spacing below the header */
+}
+
+.page-title {
+    margin: 0; /* Remove default margins */
+    font-size: 2.5rem; /* Adjust font size as needed */
+}
+
+.container {
+    width: 80%; /* Adjust the width of your container */
+    max-width: 500px; /* Optional: Limit the max width */
+    /* Optional: Add a background color */
+    padding: 20px; /* Optional: Add padding inside the container */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for a better look */
+    border-radius: 8px; /* Optional: Round corners */
+}
+
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <h1 class="page-title">RPMoN</h1> <!-- Heading at the top -->
+    </header>
+    <div class="container">
+        
+        <form id="loginForm">
+            
+            <h2>Login </h2>
+            <label for="loginEmail">Email:</label>
+            <input type="email" id="loginEmail" name="email" placeholder="Enter email/userID" required>
+            
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="loginPassword" name="password" placeholder="Enter password" required>
+            
+            <button type="submit">Login</button>
+            <a href="#" id="createUserBtn"></a>
+            <a href="#">Forgot password or UserID? Contact Admin</a>
+        </form>
+
+        <form id="createUserForm">
+            
+            <h2>Create User</h2>
+            <label for="createName">Name:</label>
+            <input type="text" id="createName" name="name" placeholder="Enter your name" required>
+            
+            <label for="createEmail">Email:</label>
+            <input type="email" id="createEmail" name="email" placeholder="Enter your email" required>
+            
+            <label for="createPassword">Password:</label>
+            <input type="password" id="createPassword" name="password" placeholder="Enter your password" required>
+            
+            <button type="submit">Create User</button>
+            <button type="button" id="backToLoginBtn">Back to Login</button>
+        </form>
+    </div>
+
+    <script>
+        // Show Create User form
+        document.getElementById('createUserBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('createUserForm').style.display = 'block';
+        });
+
+        // Back to Login
+        document.getElementById('backToLoginBtn').addEventListener('click', function () {
+            document.getElementById('createUserForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        });
+
+        // Handle Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+
+            if (result.success) {
+                window.location.href = '/dashboard';
+            }
+        });
+
+        // Handle Create User Form Submission
+        document.getElementById('createUserForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const name = document.getElementById('createName').value;
+            const email = document.getElementById('createEmail').value;
+            const password = document.getElementById('createPassword').value;
+
+            const response = await fetch('/create_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, password })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+        });
+    </script>
+</body>
+</html>

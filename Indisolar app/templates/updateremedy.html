@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <title>Search Remedy</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        #dateInput {
+            width: calc(100%);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        #searchButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #searchButton:hover {
+            background-color: #45a049;
+        }
+
+        /* Results Container */
+        #resultsContainer {
+            margin-top: 15px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .form-group {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .required {
+            color: red;
+            font-weight: bold;
+        }
+
+        .checkbox-container {
+            margin-bottom: 20px;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .preview {
+            width: 150px;
+            height: 150px;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: #f9f9f9;
+        }
+
+        .preview img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .assessment-container {
+    width: 100%; /* Matches the total container width */
+    max-width: 600px; /* Matches the maximum width of the search container */
+    height: 150px; /* Set the desired height */
+    border: 1px solid #ccc; /* Border for the container */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background color */
+    margin-top: 15px; /* Add spacing above the container */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    text-align: center; /* Center-align text inside */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for a polished look */
+    padding: 10px; /* Add padding inside the container */
+    position: relative; /* Enable absolute positioning for child elements */
+}
+
+/* Comment Icon */
+.comment-icon {
+    font-size: 24px; /* Icon size */
+    color: blue; /* Blue color for the icon */
+    position: absolute; /* Positioning relative to the container */
+    bottom: 10px; /* Adjust distance from the bottom */
+    right: 10px; /* Adjust distance from the right */
+    cursor: pointer; /* Cursor pointer for interactivity */
+}
+
+    </style>
+</head>
+<body>
+    <h1>Manage Remedy</h1>
+    <div class="search-container">
+        <div class="form-group">
+            <label for="dateInput">Select  Date <span class="required">*</span></label>
+            <input type="date" id="dateInput" placeholder="Select task date">
+        </div>
+        
+        <button id="searchButton">Search</button>
+        <div class="assessment-container">
+            
+            <div class="checkbox-container">
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="picture1" name="picture1">
+                        Task 1
+                    </label>
+                    
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="picture2" name="picture2">
+                        Task 2
+                    </label>
+                </div>
+                </div>
+            
+            <i title="Comments" class="bi bi-chat-dots comment-icon"></i> <!-- Comment icon -->
+            
+        </div>
+        
+        <div class="form-group">
+            <label for="remedy_status">Remedy Status<span class="required">*</span></label>
+            <select id="remedy_status" name="remedy_status" required>
+                <option value="" disabled selected>Previous Status</option>
+                <option value="Incomplete">Incomplete</option>
+                <option value="In progress">In Progress</option>
+                <option value="Under review">Under Review</option>
+                <option value="Final">Final</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="assessed_case">Assessed Case<span class="required">*</span></label>
+            <select id="assessed_case" name="assessed_case" required>
+                <option value="" disabled selected>Previous Cases</option>
+                <option value="Corrosion1">Corrosion1</option>
+                <option value="Corrosion2">Corrosion2</option>
+                <option value="Corrosion3">Corrosion3</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="checkbox-container">
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="picture1" name="picture1">
+                Take Picture 1
+            </label>
+            <div>
+                <button id="retakeButton" style="background-color: #0384b3; margin-left: 20px; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Take Picture</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="picture2" name="picture2">
+                Take Picture 2
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="picture3" name="picture3">
+                Take Picture 3
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="picture4" name="picture4">
+                Take Picture 4
+            </label>
+        </div>
+    </div>
+    
+    <div class="preview-container">
+        <div class="preview" id="preview1">
+            <img src="placeholder1.png" alt="Picture 1">
+        </div>
+        <div class="preview" id="preview2">
+            <img src="placeholder2.png" alt="Picture 2">
+        </div>
+        <div class="preview" id="preview3">
+            <img src="placeholder3.png" alt="Picture 3">
+        </div>
+        <div class="preview" id="preview4">
+            <img src="placeholder4.png" alt="Picture 4">
+        </div>
+    </div>
+    
+    <div class="button-container" style="margin-top: 20px;">
+        <button id="retakeButton" style="background-color: #f0ad4e; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Retake</button>
+        <button id="submitButton" style="background-color: #5cb85c; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
+    </div>
+    
+    <script>
+        document.getElementById("searchButton").addEventListener("click", () => {
+            const selectedDate = document.getElementById("dateInput").value;
+            if (selectedDate) {
+                fetchRemedyDetails(selectedDate);
+            } else {
+                alert("Please select a date.");
+            }
+        });
+
+        function fetchRemedyDetails(date) {
+
+            resetDropdown("remedy_status");
+        resetDropdown("assessed_case");
+
+            fetch(`/search_by_remedydate?date=${encodeURIComponent(date)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.remedy_status && data.assessed_case) {
+                        // Set the selected value for Remedy Status
+                        setDropdownValue("remedy_status", data.remedy_status);
+
+                        // Set the selected value for Assessed Case
+                        setDropdownValue("assessed_case", data.assessed_case);
+                    } else {
+                        alert("No data found for the selected date.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                    alert("An error occurred while fetching the remedy details.");
+                });
+        }
+
+        function setDropdownValue(dropdownId, value) {
+            const dropdown = document.getElementById(dropdownId);
+            const options = dropdown.options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value === value) {
+                    options[i].selected = true;
+                    return;
+                }
+            }
+            alert(`Value "${value}" not found in the dropdown for ${dropdownId}.`);
+        }
+
+        function resetDropdown(dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        dropdown.selectedIndex = 0; // Reset to the first option
+    }
+    </script>
+</body>
+</html>

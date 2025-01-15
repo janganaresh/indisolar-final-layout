@@ -1,0 +1,156 @@
+/* Popup Message Style */
+        .popup {
+            display: none;
+            padding: 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        /* Green Popup for Success */
+        .popup.success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Red Popup for Failure */
+        .popup.failure {
+            background-color: #f44336;
+            color: white;
+        }
+
+         ############  pop up script after form end tag ##############################################################
+
+          <!-- Popup message for success or failure -->
+    <div id="popupMessage" class="popup"></div>
+
+    <script>
+        // Handling form submission
+        document.getElementById('siteForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Create a FormData object to send the form data via fetch
+            var formData = new FormData(this);
+
+            // Fetch request to submit form data
+            fetch('/submit_siteform', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var popupMessage = document.getElementById('popupMessage');
+
+                // Dynamically display server message
+                popupMessage.textContent = data.message || 'Error submitting the form. Please try again.';
+
+                if (data.success) {
+                    // Display success popup and redirect
+                    popupMessage.classList.remove('failure');
+                    popupMessage.classList.add('success');
+
+                    // Redirect after 3 seconds
+                    setTimeout(function() {
+                        window.location.href = 'dashboard';
+                    }, 3000);
+                } else {
+                    // Display failure popup and stay on the page
+                    popupMessage.classList.remove('success');
+                    popupMessage.classList.add('failure');
+                }
+
+                // Show popup message
+                popupMessage.style.display = 'block';
+
+                // Hide popup after 3 seconds
+                setTimeout(function() {
+                    popupMessage.style.display = 'none';
+                }, 3000);
+            })
+            .catch(error => {
+                var popupMessage = document.getElementById('popupMessage');
+                popupMessage.classList.remove('success');
+                popupMessage.classList.add('failure');
+                popupMessage.textContent = 'There was an error submitting the form. Please try again.';
+                popupMessage.style.display = 'block';
+
+                // Hide popup after 3 seconds
+                setTimeout(function() {
+                    popupMessage.style.display = 'none';
+                }, 2000);
+            });
+        });
+    </script>
+
+    #####################################################################################################
+    GET THE IDS Dynamically
+
+    <div class="form-group">
+        <label for="site_id">Select Site ID <span class="required">*</span></label>
+        <select id="site_id" name="site_id" required>
+            <option value="" disabled selected>Select your SiteID</option>
+            <!-- Options will be dynamically populated via JavaScript -->
+        </select>
+    </div>
+ 
+
+
+
+    <div class="form-group">
+        <label for="picture_name">Picture Name</label>
+        <input type="text" id="picture_name" name="picture_name" placeholder="Enter picture name">
+    </div>
+
+    <div class="form-group">
+        <label for="picture_location">Picture Location</label>
+        <input type="text" id="picture_location" name="picture_location" placeholder="Enter picture location">
+    </div>
+
+
+    
+
+    #####################insert this in script make changes / and id names
+
+
+    fetch('/get_site_ids')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const siteIdSelect = document.getElementById('site_id');
+                data.site_ids.forEach(siteId => {
+                    const option = document.createElement('option');
+                    option.value = siteId;
+                    option.textContent = siteId;
+                    siteIdSelect.appendChild(option);
+                });
+            } else {
+                alert('Failed to load Site IDs: ' + data.message);
+            }
+        })
+        .catch(error => console.error('Error fetching Site IDs:', error));
+
+
+
+        #######################app.py code ######################
+
+# get the all siteid options from database
+@app.route('/get_site_ids', methods=['GET'])
+def get_site_ids():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT `Site ID` FROM `site`")
+        site_ids = [row[0] for row in cursor.fetchall()]
+        return jsonify({"success": True, "site_ids": site_ids})
+    except mysql.connector.Error as e:
+        return jsonify({"success": False, "message": f"Error fetching Site IDs: {e}"})
+    finally:
+        cursor.close()
+        connection.close()

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Indisolar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: #2eba41;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .burger {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            font-size: 16px;
+            color: white;
+            border-bottom: 2px solid transparent;
+        }
+
+        .menu a:hover {
+            border-bottom: 2px solid white;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .tab {
+            flex: 1;
+            max-width: 150px;
+            padding: 10px;
+            border-radius: 5px;
+            background: #f1f1f1;
+            color: black;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .tab.active {
+            background: #2eba41;
+            color: white;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            color: #2c3e50;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .content label {
+            font-weight: bold;
+            margin-right: 10px;
+            width: 120px;
+            display: inline-block;
+            text-align: right;
+        }
+
+        .content input[type="date"], .content select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 140px);
+        }
+
+        .content .field {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        /* Side menu for mobile */
+        .side-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 60%;
+            background: #2eba41;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .side-menu.show {
+            display: block;
+            transform: translateX(0);
+        }
+
+        .side-menu a {
+            display: block;
+            text-decoration: none;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 18px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .side-menu a:hover {
+            border-bottom: 1px solid white;
+        }
+
+        .side-menu .logout {
+            margin-top: auto;
+            text-align: center;
+            border: 1px solid white;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .side-menu .logout:hover {
+            background: white;
+            color: #2eba41;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .menu {
+                display: none;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .tabs {
+                flex-wrap: nowrap;
+                justify-content: space-around;
+            }
+
+            .tab {
+                flex: 1;
+                margin: 0 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">RPMoN</div>
+        <div class="burger" id="burgerMenu">☰</div>
+        <div class="menu">
+            <a href="/customer">Customer information</a>
+            <a href="/userform">User information</a>
+            <a href="/area">Area</a>
+            <a href="/user_log">userlog</a>
+            <a href="/site">Site Information</a>
+        </div>
+    </header>
+    <div class="tabs">
+        <div class="tab active" id="todayTasksTab" onclick="showContent('todayTasks')">Today's Tasks</div>
+        <div class="tab" id="taskManagementTab" onclick="showContent('taskManagement')">Task Management</div>
+    </div>
+    <div class="container">
+        <div class="content" id="content">
+            <h2>Today's Tasks</h2>
+            <p>View and manage your tasks for today.</p>
+            <div class="field">
+                <label for="taskDate">Select Date:</label>
+                <input type="date" id="taskDate" name="taskDate">
+            </div>
+            <div class="field">
+                <label for="assignUser">Assign to User:</label>
+                <select id="assignUser" name="assignUser">
+                    <option value="">Select a user</option>
+                    <option value="user1">User 1</option>
+                    <option value="user2">User 2</option>
+                    <option value="user3">User 3</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="side-menu" id="sideMenu">
+        <a href="/customer">Customer Information</a>
+        <a href="/userform">User Information</a>
+        <a href="/area">Area</a>
+        <a href="/user_log">Help</a>
+        <a href="/site">Site Information</a>
+        <form action="/logout" method="POST" style="margin-top: auto;">
+            <button type="submit" class="logout">Logout</button>
+        </form>
+    </div>
+    <div class="overlay" id="overlay"></div>
+    <script>
+        const burger = document.getElementById('burgerMenu');
+        const sideMenu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+        const todayTasksTab = document.getElementById('todayTasksTab');
+        const taskManagementTab = document.getElementById('taskManagementTab');
+        const content = document.getElementById('content');
+
+        burger.addEventListener('click', () => {
+            sideMenu.classList.toggle('show');
+            overlay.classList.toggle('show');
+        });
+
+        overlay.addEventListener('click', () => {
+            sideMenu.classList.remove('show');
+            overlay.classList.remove('show');
+        });
+
+        function showContent(tab) {
+            if (tab === 'todayTasks') {
+                todayTasksTab.classList.add('active');
+                taskManagementTab.classList.remove('active');
+                content.innerHTML = `
+                    <h2>Today's Tasks</h2>
+                    <p>View and manage your tasks for today.</p>
+                    <div class="field">
+                        <label for="taskDate">Select Date:</label>
+                        <input type="date" id="taskDate" name="taskDate">
+                    </div>
+                    <div class="field">
+                        <label for="assignUser">Assign to User:</label>
+                        <select id="assignUser" name="assignUser">
+                            <option value="">Select a user</option>
+                            <option value="user1">User 1</option>
+                            <option value="user2">User 2</option>
+                            <option value="user3">User 3</option>
+                        </select>
+                    </div>`;
+            } else if (tab === 'taskManagement') {
+                taskManagementTab.classList.add('active');
+                todayTasksTab.classList.remove('active');
+                content.innerHTML = `
+                    <h2>Task Management</h2>
+                    <p>Manage all your tasks effectively.</p>`
+                 
+            }
+        }
+    </script>
+</body>
+</html>

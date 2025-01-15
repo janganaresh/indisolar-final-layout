@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      /* General Reset */
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      /* Body Style */
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f9;
+          color: #333;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-top: 20px;
+      }
+
+      /* Heading */
+      h1 {
+          text-align: center;
+          color: #4CAF50;
+          margin-bottom: 20px;
+          font-size: 1.8rem;
+      }
+
+      /* Form */
+      form {
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          max-width: 600px;
+          padding: 20px;
+      }
+
+      /* Form Group */
+      .form-group {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          margin-bottom: 15px;
+      }
+
+      label {
+          font-size: 16px;
+          font-weight: 600;
+          color: #555;
+          margin-bottom: 5px;
+          flex: 1;
+          min-width: 150px;
+      }
+
+      input[type="text"],input[type="email"], select, input[type="date"] {
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 16px;
+          color: #555;
+          flex: 2;
+      }
+
+      input[type="text"]:focus, select:focus, input[type="date"]:focus {
+          border-color: #4CAF50;
+          outline: none;
+      }
+
+      /* Required Fields */
+      .required {
+          color: red;
+          font-weight: bold;
+      }
+
+      /* Submit and Cancel Buttons */
+      input[type="submit"], 
+      .cancel-button {
+          display: inline-block;
+          padding: 12px 20px; /* Ensure consistent padding */
+          font-size: 16px;
+          border-radius: 4px;
+          text-align: center;
+          text-decoration: none;
+          line-height: normal; /* Prevent misalignment */
+          border: none; /* Ensure no border inconsistencies */
+          box-sizing: border-box; /* Consistent box sizing */
+          cursor: pointer;
+          flex: 1; /* Equal width for buttons */
+      }
+
+     /* Buttons (Update and Delete) */
+     .form-buttons {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+      }
+
+      input[type="submit"], .delete-btn {
+          width: 48%;
+          padding: 12px;
+          border-radius: 4px;
+          font-size: 16px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          text-align: center;
+      }
+
+      input[type="submit"] {
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+      }
+
+      input[type="submit"]:hover {
+          background-color: #45a049;
+      }
+
+      .delete-btn {
+          background-color: #f44336;
+          color: white;
+          border: none;
+      }
+
+      .delete-btn:hover {
+          background-color: #e53935;
+      }
+
+      /* Responsive Behavior */
+      @media (max-width: 768px) {
+          .form-group {
+              flex-direction: column;
+          }
+
+          label {
+              margin-bottom: 5px;
+          }
+          
+          .buttons {
+              flex-direction: column; /* Stack buttons vertically */
+          }
+          
+          input[type="text"], select, input[type="date"] {
+              width: 100%;
+          }
+          
+          input[type="submit"], 
+          .cancel-button {
+              width: 100%; /* Full width buttons on smaller screens */
+          }
+          .form-buttons {
+  flex-direction: column;
+  gap: 10px;
+}
+
+input[type="submit"], .delete-btn {
+  width: 100%;
+}
+
+      }
+
+      /* Centered Note */
+      .note {
+          text-align: center;
+          color: red;
+          font-size: 14px;
+          margin-top: 10px;
+      }
+
+      /* Popup Message Style */
+      .popup {
+          display: none;
+          padding: 20px;
+          font-size: 16px;
+          border-radius: 8px;
+          text-align: center;
+          width: 100%;
+          max-width: 400px;
+          position: fixed;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1000;
+      }
+
+      /* Green Popup for Success */
+      .popup.success {
+          background-color: #4CAF50;
+          color: white;
+      }
+
+      /* Red Popup for Failure */
+      .popup.failure {
+          background-color: #f44336;
+          color: white;
+      }
+
+  </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Management</h1>
+
+        <!-- Update User Form -->
+        <h2>Update User Information</h2>
+        <form id="updateuserForm" action="/submit_updateuser_form" method="POST">
+            <div class="form-group">
+                <label for="user_id">Select User <span class="required">*</span></label>
+                <select id="user_id" name="user_id" required>
+                    <option value="" disabled selected>Select User</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="user_email">Email</label>
+                <input type="email" id="user_email" name="user_email" placeholder="Enter email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="user_password">Password</label>
+                <input type="password" id="user_password" name="user_password" placeholder="Enter password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone_no">Phone Number</label>
+                <input type="text" id="phone_no" name="phone_no" placeholder="Enter phone number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="site_id">Site ID</label>
+                <input type="text" id="site_id" name="site_id" placeholder="Enter site ID" required>
+            </div>
+
+            <button type="submit">Update</button>
+        </form>
+
+        <!-- Delete User Form -->
+        <h2>Delete User</h2>
+        <form id="deleteuserForm" action="/delete_user" method="POST">
+            <div class="form-group">
+                <label for="delete_user_id">Select User <span class="required">*</span></label>
+                <select id="delete_user_id" name="user_id" required>
+                    <option value="" disabled selected>Select User</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+
+    <script>
+        // Fetch and populate user IDs dynamically when the page loads
+        window.onload = function() {
+            fetch('/get_users')
+                .then(response => response.json())
+                .then(data => {
+                    const userSelect = document.getElementById('user_id');
+                    const deleteUserSelect = document.getElementById('delete_user_id');
+
+                    data.users.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user.id;
+                        option.textContent = `${user.username} (${user.email})`;
+                        userSelect.appendChild(option);
+
+                        const deleteOption = document.createElement('option');
+                        deleteOption.value = user.id;
+                        deleteOption.textContent = `${user.username} (${user.email})`;
+                        deleteUserSelect.appendChild(deleteOption);
+                    });
+                })
+                .catch(error => console.error('Error fetching users:', error));
+        }
+    </script>
+</body>
+</html>
