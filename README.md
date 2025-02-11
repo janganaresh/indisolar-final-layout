@@ -1,5 +1,11 @@
 # indisolar-final-layout
 
+
+
+http://192.168.31.52:5000
+
+
+
 db_pool = pooling.MySQLConnectionPool(
     pool_name="mypool",
     pool_size=30,  # Adjust based on workload
