@@ -1,6 +1,7 @@
 # indisolar-final-layout
 
-
+ngrok link to get flask app over any network and it will change when you restart the ngrok cmd  
+https://2e89-2409-40f0-11d7-5d9e-155d-3870-2084-ddd5.ngrok-free.app/
 
 http://192.168.31.52:5000
 
