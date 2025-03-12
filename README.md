@@ -2,6 +2,8 @@
 
 ngrok link to get flask app over any network and it will change when you restart the ngrok cmd  
 
+ https://70fe-152-59-197-77.ngrok-free.app 
+ 
 http://192.168.31.53:5000
 
 
